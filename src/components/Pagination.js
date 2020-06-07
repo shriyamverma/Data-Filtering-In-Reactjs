@@ -7,13 +7,23 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     pageNumbers.push(i);
   }
 
+  const pageNoStyle = {
+    fontSize: '1.5em',
+    paddingBottom: "1.5em",
+    margin: '8px',
+    fontWeight: '500',
+    border: "1px solid #CD5C5C",
+    backgroundColor: "#FA8072",
+  };
   return (
-      <ul className='pagination'>
+      <ul className='pagination center'>
+        <br/>
         {pageNumbers.map(number => (
-          <li key={number} className='page-item'>
-              <a onClick={() => paginate(number)} href='!#' className=''> {number} </a>
+          <li key={number} className='page-item' style={pageNoStyle}>
+              <a onClick={() => paginate(number)} href='!#' style={{color: '#FFF'}}> {number} </a>
           </li>
         ))}
+        <br/><br/>
       </ul>
   );
 };

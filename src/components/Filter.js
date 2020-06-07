@@ -6,8 +6,8 @@ import Pagination from './Pagination';
 
 class Filter extends Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             data: myData,
             pageNo: 1,
@@ -18,7 +18,7 @@ class Filter extends Component {
         this.changeStatus = this.changeStatus.bind(this);
         this.selectBrand = this.selectBrand.bind(this);
         this.sortBy = this.sortBy.bind(this);
-        // this.paginate = this.paginate.bind(this);
+        this.paginate = this.paginate.bind(this);
     }
 
     // shouldComponentUpdate() {
@@ -108,13 +108,13 @@ class Filter extends Component {
         }
         this.setState({data : newData});
     }
-    // paginate = (pgNo) => {
-    //     // lastItem = pgNo * this.state.itemsPerPage;
-    //     // firstItem = lastItem - this.state.itemsPerPage;
-    //     this.setState({lastItem: pgNo * this.state.itemsPerPage});
-    //     // this.setState({lastItem});
-    // }
+    paginate = (pgNo) => {
+        this.setState({pageNo: pgNo});
+    }
     render(){
+        
+        let lastLimit = this.state.pageNo * this.state.itemsPerPage;
+        let firstLimit = lastLimit - this.state.itemsPerPage;
         
         const UniqueBrands = Array.from(new Set(
             myData.map(d => d.brand)
@@ -153,7 +153,7 @@ class Filter extends Component {
                 </div>
                 <div className="col s12 m12 center" style={{marginTop:'6px'}}>
                 <div><br/>Check These Out:</div>
-                {UniqueBrands.map(brand => 
+                    {UniqueBrands.map(brand => 
                         <label htmlFor brand style={{marginRight:"10px"}}>
                             <input id={brand} value={brand} type="checkbox" onClick={this.selectBrand}/>
                             <span>{brand}</span>
@@ -161,8 +161,8 @@ class Filter extends Component {
                     )}
                     <br></br><br></br><br></br><br></br>
                 </div>
-                <MainContent key="__id" data={this.state.data}/>
-                <Pagination postsPerPage='5' totalPosts={this.state.data.length} paginate={[]} />
+                <MainContent key={this.state.data.name} data={this.state.data.slice(firstLimit,lastLimit)}/>
+                <Pagination key={this.state.data.name} postsPerPage={this.state.itemsPerPage} totalPosts={this.state.data.length} paginate={this.paginate} />
             </div>
         );
     }
